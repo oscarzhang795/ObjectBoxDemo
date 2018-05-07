@@ -11,6 +11,7 @@ import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.
                                             childColumns = arrayOf("postId"),
                                             onDelete = ForeignKey.CASCADE)))
 data class Comment (
+
         @PrimaryKey(autoGenerate = true)
         val commentId: Long,
 

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.sdadg.roomviewmodeldemo.R
+import com.sdadg.roomviewmodeldemo.data.repositories.IDataRepository
+import com.sdadg.roomviewmodeldemo.data.repositories.RoomRepository
 import kotlinx.android.synthetic.main.activity_posts.*
 
 class PostsActivity : AppCompatActivity() {
@@ -35,5 +37,11 @@ class PostsActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun loadData() {
+        val db: IDataRepository = RoomRepository(this)
+
+        db.getAllPosts()
     }
 }

@@ -6,6 +6,7 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity
 data class Post (
+
         @PrimaryKey(autoGenerate = true)
         val postId: Long,
 
