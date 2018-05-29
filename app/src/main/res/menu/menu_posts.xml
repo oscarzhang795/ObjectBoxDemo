@@ -3,8 +3,13 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.sdadg.roomviewmodeldemo.presentation.PostsActivity">
     <item
-            android:id="@+id/action_settings"
-            android:title="@string/action_settings"
+            android:id="@+id/action_clear"
+            android:title="@string/action_clear"
             android:orderInCategory="100"
+            app:showAsAction="never"/>
+    <item
+            android:id="@+id/action_load_more_data"
+            android:title="@string/action_load_more_data"
+            android:orderInCategory="101"
             app:showAsAction="never"/>
 </menu>

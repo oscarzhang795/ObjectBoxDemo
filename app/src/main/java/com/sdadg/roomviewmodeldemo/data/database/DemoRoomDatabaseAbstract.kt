@@ -16,9 +16,9 @@ abstract class DemoRoomDatabaseAbstract: RoomDatabase() {
     abstract fun commentDao(): CommentDao
 
     companion object {
-        lateinit var mInstance: DemoRoomDatabaseAbstract
+        var mInstance: DemoRoomDatabaseAbstract? = null
 
-        fun getInstance(context: Context): DemoRoomDatabaseAbstract {
+        fun getInstance(context: Context): DemoRoomDatabaseAbstract? {
             if (mInstance == null) {
 
                 synchronized(DemoRoomDatabaseAbstract::class) {
@@ -31,6 +31,7 @@ abstract class DemoRoomDatabaseAbstract: RoomDatabase() {
     }
 
     fun destroyInstance() {
-        mInstance.close()
+        mInstance?.close()
+        mInstance = null
     }
 }

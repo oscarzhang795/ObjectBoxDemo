@@ -20,4 +20,7 @@ interface PostDao {
 
     @Update
     fun updatePost(post: Post)
+
+    @Query("Delete from post")
+    fun deletePosts()
 }

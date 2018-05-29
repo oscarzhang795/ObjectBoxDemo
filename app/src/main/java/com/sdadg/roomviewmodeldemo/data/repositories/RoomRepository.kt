@@ -10,44 +10,42 @@ class RoomRepository(var context: Context): IDataRepository {
     override fun getAllPosts(): List<Post> {
         var results: List<Post>
 
-        val postDao = DemoRoomDatabaseAbstract.getInstance(context).postDao()
-
-        results = postDao.getAllPosts()
-
-        return results
+        return DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.getAllPosts()?: arrayListOf()
     }
 
-    override fun getPostById(id: Long): Post {
-        val postDao = DemoRoomDatabaseAbstract.getInstance(context).postDao()
-
-        return postDao.getPostByPostId(id)
+    override fun getPostById(id: Long): Post? {
+        return DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.getPostByPostId(id)
     }
 
     override fun insertPost(post: Post): Long {
-        return DemoRoomDatabaseAbstract.getInstance(context).postDao().insertPost(post)
+        return DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.insertPost(post)?: -1
     }
 
     override fun deletePost(post: Post) {
-        DemoRoomDatabaseAbstract.getInstance(context).postDao().deletePost(post)
+        DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.deletePost(post)
+    }
+
+    override fun deletePosts() {
+        DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.deletePosts()
     }
 
     override fun updatePost(post: Post){
-        DemoRoomDatabaseAbstract.getInstance(context).postDao().updatePost(post)
+        DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.updatePost(post)
     }
 
     override fun getAllCommentsByPostId(id: Long): List<Comment> {
-        return DemoRoomDatabaseAbstract.getInstance(context).commentDao().getCommentsByPostId(id)
+        return DemoRoomDatabaseAbstract.getInstance(context)?.commentDao()?.getCommentsByPostId(id)?: arrayListOf()
     }
 
     override fun insertComment(comment: Comment): Long {
-        return DemoRoomDatabaseAbstract.getInstance(context).commentDao().insertComment(comment)
+        return DemoRoomDatabaseAbstract.getInstance(context)?.commentDao()?.insertComment(comment)?: -1
     }
 
     override fun deleteComment(comment: Comment) {
-        DemoRoomDatabaseAbstract.getInstance(context).commentDao().deleteComment(comment)
+        DemoRoomDatabaseAbstract.getInstance(context)?.commentDao()?.deleteComment(comment)
     }
 
     override fun updateComment(comment: Comment) {
-        DemoRoomDatabaseAbstract.getInstance(context).commentDao().updateComment(comment)
+        DemoRoomDatabaseAbstract.getInstance(context)?.commentDao()?.updateComment(comment)
     }
 }

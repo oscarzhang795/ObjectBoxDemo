@@ -13,7 +13,7 @@ import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.
 data class Comment (
 
         @PrimaryKey(autoGenerate = true)
-        val commentId: Long,
+        val commentId: Long?,
 
         @ColumnInfo(name = "postId")
         val postId: Long,
