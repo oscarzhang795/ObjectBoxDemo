@@ -33,8 +33,6 @@ class PostDetailsActivity : AppCompatActivity() {
             addComment();
         }
 
-
-
         loadComments()
     }
 
