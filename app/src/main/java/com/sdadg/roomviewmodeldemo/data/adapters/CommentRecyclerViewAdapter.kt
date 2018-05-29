@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
 import com.sdadg.roomviewmodeldemo.data.viewholders.CommentViewHolder
+import com.sdadg.roomviewmodeldemo.utilities.StringUtilities
 
 class CommentRecyclerViewAdapter(val listener: CommentRecyclerViewAdapter.Listeners): RecyclerView.Adapter<CommentViewHolder>() {
 
@@ -34,7 +35,7 @@ class CommentRecyclerViewAdapter(val listener: CommentRecyclerViewAdapter.Listen
         })
 
         holder.tvTitle.text = data.get(position).comment
-        holder.tvPostedAt.text = data.get(position).commentedAt.toString()
+        holder.tvPostedAt.text = StringUtilities.formatTimestamp(data.get(position).commentedAt)
     }
 
     interface Listeners {

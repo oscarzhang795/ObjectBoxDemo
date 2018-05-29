@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.viewholders.PostViewHolder
 import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.Post
+import com.sdadg.roomviewmodeldemo.utilities.StringUtilities
 
 class PostRecyclerViewAdapter(val listener: PostRecyclerViewAdapter.Listeners): RecyclerView.Adapter<PostViewHolder>() {
 
@@ -29,7 +30,7 @@ class PostRecyclerViewAdapter(val listener: PostRecyclerViewAdapter.Listeners): 
         })
 
         holder.tvTitle.text = data.get(position).title
-        holder.tvPostedAt.text = data.get(position).postedAt.toString()
+        holder.tvPostedAt.text = StringUtilities.formatTimestamp(data.get(position).postedAt)
     }
 
     interface Listeners {
