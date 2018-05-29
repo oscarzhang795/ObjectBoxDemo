@@ -10,8 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.adapters.PostRecyclerViewAdapter
-import com.sdadg.roomviewmodeldemo.data.repositories.IDataRepository
-import com.sdadg.roomviewmodeldemo.data.repositories.RoomRepository
+import com.sdadg.roomviewmodeldemo.data.old.CustomSqliteOpenHelper
 import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.Post
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.content_posts.*
@@ -20,8 +19,8 @@ import java.util.*
 class PostsActivity : AppCompatActivity() {
 
     val postItemAdapterListener = AdapterListener(this)
-    val db: IDataRepository = RoomRepository(this)
-    //val db = CustomSqliteOpenHelper(this)
+    //val db: IDataRepository = RoomRepository(this)
+    val db = CustomSqliteOpenHelper(this)
     lateinit var posts: List<Post>
     val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
 

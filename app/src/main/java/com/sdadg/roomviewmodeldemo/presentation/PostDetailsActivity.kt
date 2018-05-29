@@ -6,8 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.adapters.CommentRecyclerViewAdapter
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
-import com.sdadg.roomviewmodeldemo.data.repositories.IDataRepository
-import com.sdadg.roomviewmodeldemo.data.repositories.RoomRepository
+import com.sdadg.roomviewmodeldemo.data.old.CustomSqliteOpenHelper
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.content_feed.*
 import java.lang.ref.WeakReference
@@ -18,8 +17,8 @@ class PostDetailsActivity : AppCompatActivity() {
     var postId = 0L
     var commentListener = CommentListener(WeakReference(this))
     val adapter = CommentRecyclerViewAdapter(commentListener)
-    val db: IDataRepository = RoomRepository(this)
-    //val db = CustomSqliteOpenHelper(this)
+    //val db: IDataRepository = RoomRepository(this)
+    val db = CustomSqliteOpenHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,20 +54,20 @@ class PostDetailsActivity : AppCompatActivity() {
 
     class CommentListener(val weakReference: WeakReference<PostDetailsActivity>) : CommentRecyclerViewAdapter.Listeners {
         override fun onItemClickByPosition(position: Int) {
-            val db = RoomRepository(weakReference.get() as PostDetailsActivity)
+            /*val db = RoomRepository(weakReference.get() as PostDetailsActivity)
             db.deleteComment((weakReference.get() as PostDetailsActivity).adapter.getItemByPosition(position))
 
-            (weakReference.get() as PostDetailsActivity).refreshComments()
+            (weakReference.get() as PostDetailsActivity).refreshComments()*/
         }
 
         override fun onItemClick(commentId: Long) {
-            /*if (weakReference.get() != null) {
+            if (weakReference.get() != null) {
 
                 val db = CustomSqliteOpenHelper(weakReference.get())
                 db.deleteComment(commentId)
 
                 (weakReference.get() as PostDetailsActivity).refreshComments()
-            }*/
+            }
         }
     }
 }
