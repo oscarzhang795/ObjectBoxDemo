@@ -23,14 +23,17 @@ class PostDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
+
+        postId = intent.getLongExtra("postId", 0)
+        val postTitle = intent.getStringExtra("postTitle")
+        toolbar.title = "Comments for ${postTitle}"
         setSupportActionBar(toolbar)
+
         fab.setOnClickListener { view ->
             addComment();
         }
 
-        postId = intent.getLongExtra("postId", 0)
 
-        toolbar.title = "Details for ${postId.toString()}"
 
         loadComments()
     }

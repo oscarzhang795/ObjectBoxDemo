@@ -26,7 +26,7 @@ class PostRecyclerViewAdapter(val listener: PostRecyclerViewAdapter.Listeners): 
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.container.setOnClickListener({
-            listener.onItemClick(data.get(position).postId)
+            listener.onItemClick(data.get(position).postId, data.get(position).title)
         })
 
         holder.tvTitle.text = data.get(position).title
@@ -34,6 +34,6 @@ class PostRecyclerViewAdapter(val listener: PostRecyclerViewAdapter.Listeners): 
     }
 
     interface Listeners {
-        fun onItemClick(postId: Long)
+        fun onItemClick(postId: Long, postTitle: String)
     }
 }

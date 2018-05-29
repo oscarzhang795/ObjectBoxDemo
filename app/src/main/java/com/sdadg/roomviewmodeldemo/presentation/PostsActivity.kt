@@ -90,9 +90,10 @@ class PostsActivity : AppCompatActivity() {
     }
 
     class AdapterListener (val context: Context) : PostRecyclerViewAdapter.Listeners {
-        override fun onItemClick(postId: Long) {
+        override fun onItemClick(postId: Long, postTitle: String) {
             val intent = Intent(context, PostDetailsActivity::class.java)
             intent.putExtra("postId", postId)
+            intent.putExtra("postTitle", postTitle)
             context.startActivity(intent)
         }
     }
