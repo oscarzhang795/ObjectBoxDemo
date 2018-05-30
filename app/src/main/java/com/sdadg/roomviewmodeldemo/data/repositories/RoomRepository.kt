@@ -3,13 +3,11 @@ package com.sdadg.roomviewmodeldemo.data.repositories
 import android.content.Context
 import com.sdadg.roomviewmodeldemo.data.database.DemoRoomDatabaseAbstract
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
-import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.Post
+import com.sdadg.roomviewmodeldemo.data.entities.Post
 
 class RoomRepository(var context: Context): IDataRepository {
 
     override fun getAllPosts(): List<Post> {
-        var results: List<Post>
-
         return DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.getAllPosts()?: arrayListOf()
     }
 

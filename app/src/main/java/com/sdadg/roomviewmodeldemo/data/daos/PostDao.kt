@@ -1,7 +1,7 @@
 package com.sdadg.roomviewmodeldemo.data.daos
 
 import android.arch.persistence.room.*
-import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.Post
+import com.sdadg.roomviewmodeldemo.data.entities.Post
 
 @Dao
 interface PostDao {

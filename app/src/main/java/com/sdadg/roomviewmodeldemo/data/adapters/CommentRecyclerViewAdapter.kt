@@ -8,12 +8,12 @@ import com.sdadg.roomviewmodeldemo.data.entities.Comment
 import com.sdadg.roomviewmodeldemo.data.viewholders.CommentViewHolder
 import com.sdadg.roomviewmodeldemo.utilities.StringUtilities
 
-class CommentRecyclerViewAdapter(val listener: CommentRecyclerViewAdapter.Listeners): RecyclerView.Adapter<CommentViewHolder>() {
+class CommentRecyclerViewAdapter(private val listener: CommentRecyclerViewAdapter.Listeners): RecyclerView.Adapter<CommentViewHolder>() {
 
     private lateinit var data: List<Comment>
 
     fun loadData(d: List<Comment>){
-        data = d;
+        data = d
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -25,17 +25,17 @@ class CommentRecyclerViewAdapter(val listener: CommentRecyclerViewAdapter.Listen
     }
 
     fun getItemByPosition(position: Int): Comment {
-        return data.get(position)
+        return data[position]
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         holder.container.setOnClickListener({
-            listener.onItemClick(data.get(position).commentId?: -1)
+            listener.onItemClick(data[position].commentId?: -1)
             listener.onItemClickByPosition(position)
         })
 
-        holder.tvTitle.text = data.get(position).comment
-        holder.tvPostedAt.text = StringUtilities.formatTimestamp(data.get(position).commentedAt)
+        holder.tvTitle.text = data[position].comment
+        holder.tvPostedAt.text = StringUtilities.formatTimestamp(data[position].commentedAt)
     }
 
     interface Listeners {

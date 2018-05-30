@@ -8,13 +8,7 @@ import com.sdadg.roomviewmodeldemo.R
 
 class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    var container: ConstraintLayout
-    var tvTitle: TextView
-    var tvPostedAt: TextView
-
-    init {
-        container = itemView.findViewById(R.id.container)
-        tvTitle = itemView.findViewById(R.id.tvTitle)
-        tvPostedAt = itemView.findViewById(R.id.tvPostedAt)
-    }
+    var container: ConstraintLayout = itemView.findViewById(R.id.container)
+    var tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+    var tvPostedAt: TextView = itemView.findViewById(R.id.tvPostedAt)
 }

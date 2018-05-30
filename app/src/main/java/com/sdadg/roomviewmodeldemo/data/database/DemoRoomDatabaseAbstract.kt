@@ -7,9 +7,9 @@ import android.content.Context
 import com.sdadg.roomviewmodeldemo.data.daos.CommentDao
 import com.sdadg.roomviewmodeldemo.data.daos.PostDao
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
-import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.Post
+import com.sdadg.roomviewmodeldemo.data.entities.Post
 
-@Database(entities = arrayOf(Post::class, Comment::class), version = 1)
+@Database(entities = [(Post::class), (Comment::class)], version = 1)
 abstract class DemoRoomDatabaseAbstract: RoomDatabase() {
 
     abstract fun postDao(): PostDao

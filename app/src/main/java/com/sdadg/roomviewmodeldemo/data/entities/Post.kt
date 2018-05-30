@@ -1,4 +1,4 @@
-package com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities
+package com.sdadg.roomviewmodeldemo.data.entities
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Room ViewModel Demo</string>
     <string name="action_clear">Clear</string>
-    <string name="title_activity_feed">Feed</string>
     <string name="action_load_more_data">Load More Data</string>
 </resources>

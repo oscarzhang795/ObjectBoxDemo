@@ -1,7 +1,7 @@
 package com.sdadg.roomviewmodeldemo.data.repositories
 
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
-import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.Post
+import com.sdadg.roomviewmodeldemo.data.entities.Post
 
 interface IDataRepository {
 

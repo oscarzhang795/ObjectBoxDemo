@@ -4,16 +4,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.sdadg.roomviewmodeldemo.R
+import com.sdadg.roomviewmodeldemo.data.entities.Post
 import com.sdadg.roomviewmodeldemo.data.viewholders.PostViewHolder
-import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.Post
 import com.sdadg.roomviewmodeldemo.utilities.StringUtilities
 
-class PostRecyclerViewAdapter(val listener: PostRecyclerViewAdapter.Listeners): RecyclerView.Adapter<PostViewHolder>() {
+class PostRecyclerViewAdapter(private val listener: PostRecyclerViewAdapter.Listeners): RecyclerView.Adapter<PostViewHolder>() {
 
     private lateinit var data: List<Post>
 
     fun loadData(d: List<Post>){
-        data = d;
+        data = d
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -26,11 +26,11 @@ class PostRecyclerViewAdapter(val listener: PostRecyclerViewAdapter.Listeners): 
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.container.setOnClickListener({
-            listener.onItemClick(data.get(position).postId)
+            listener.onItemClick(data[position].postId)
         })
 
-        holder.tvTitle.text = data.get(position).title
-        holder.tvPostedAt.text = StringUtilities.formatTimestamp(data.get(position).postedAt)
+        holder.tvTitle.text = data[position].title
+        holder.tvPostedAt.text = StringUtilities.formatTimestamp(data[position].postedAt)
     }
 
     interface Listeners {

@@ -10,20 +10,20 @@ import android.view.Menu
 import android.view.MenuItem
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.adapters.PostRecyclerViewAdapter
+import com.sdadg.roomviewmodeldemo.data.entities.Post
 import com.sdadg.roomviewmodeldemo.data.repositories.IDataRepository
 import com.sdadg.roomviewmodeldemo.data.repositories.RoomRepository
-import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.Post
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.content_posts.*
 import java.util.*
 
 class PostsActivity : AppCompatActivity() {
 
-    val postItemAdapterListener = AdapterListener(this)
-    val db: IDataRepository = RoomRepository(this)
+    private val postItemAdapterListener = AdapterListener(this)
+    private val db: IDataRepository = RoomRepository(this)
     //val db = CustomSqliteOpenHelper(this)
-    lateinit var posts: List<Post>
-    val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
+    private lateinit var posts: List<Post>
+    private val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +62,7 @@ class PostsActivity : AppCompatActivity() {
         loadData()
     }
 
-    fun loadData() {
+    private fun loadData() {
         posts = db.getAllPosts()
 
         rvPosts.adapter = adapter
@@ -70,17 +70,17 @@ class PostsActivity : AppCompatActivity() {
         adapter.loadData(posts)
     }
 
-    fun insertTestData() {
+    private fun insertTestData() {
         for (x in 1..20) {
             createPost(x.toLong())
         }
     }
 
-    fun createPost(postId: Long) {
+    private fun createPost(postId: Long) {
         db.insertPost(Post(postId, "Post $postId", Calendar.getInstance().timeInMillis))
     }
 
-    fun clearData() {
+    private fun clearData() {
         db.deletePosts()
         loadData()
     }

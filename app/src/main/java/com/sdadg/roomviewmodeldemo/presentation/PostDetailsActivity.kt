@@ -16,22 +16,22 @@ import java.util.*
 class PostDetailsActivity : AppCompatActivity() {
 
     var postId = 0L
-    var commentListener = CommentListener(WeakReference(this))
+    private var commentListener = CommentListener(WeakReference(this))
     val adapter = CommentRecyclerViewAdapter(commentListener)
-    val db: IDataRepository = RoomRepository(this)
-    //val db = CustomSqliteOpenHelper(this)
+    private val db: IDataRepository = RoomRepository(this)
+    //private val db = CustomSqliteOpenHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
         setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
-            addComment();
+            addComment()
         }
 
         postId = intent.getLongExtra("postId", 0)
 
-        toolbar.title = "Details for ${postId.toString()}"
+        toolbar.title = "Details for $postId"
 
         loadComments()
     }
@@ -53,7 +53,7 @@ class PostDetailsActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
-    class CommentListener(val weakReference: WeakReference<PostDetailsActivity>) : CommentRecyclerViewAdapter.Listeners {
+    class CommentListener(private val weakReference: WeakReference<PostDetailsActivity>) : CommentRecyclerViewAdapter.Listeners {
         override fun onItemClickByPosition(position: Int) {
             val db = RoomRepository(weakReference.get() as PostDetailsActivity)
             db.deleteComment((weakReference.get() as PostDetailsActivity).adapter.getItemByPosition(position))

@@ -1,12 +1,11 @@
 package com.sdadg.roomviewmodeldemo.data.old;
 
 import com.sdadg.roomviewmodeldemo.data.entities.Comment;
-import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.Post;
+import com.sdadg.roomviewmodeldemo.data.entities.Post;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -34,10 +33,6 @@ public class CustomSqliteOpenHelper extends SQLiteOpenHelper {
 
     public CustomSqliteOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    public CustomSqliteOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
-        super(context, name, factory, version, errorHandler);
     }
 
     @Override
