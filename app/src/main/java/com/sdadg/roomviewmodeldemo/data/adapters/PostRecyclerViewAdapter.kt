@@ -10,7 +10,7 @@ import com.sdadg.roomviewmodeldemo.utilities.StringUtilities
 
 class PostRecyclerViewAdapter(private val listener: PostRecyclerViewAdapter.Listeners): RecyclerView.Adapter<PostViewHolder>() {
 
-    private lateinit var data: List<Post>
+    private var data: List<Post> = arrayListOf()
 
     fun loadData(d: List<Post>){
         data = d
@@ -26,7 +26,7 @@ class PostRecyclerViewAdapter(private val listener: PostRecyclerViewAdapter.List
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.container.setOnClickListener({
-            listener.onItemClick(data[position].postId)
+            listener.onItemClick(data[position].postId, data[position].title)
         })
 
         holder.tvTitle.text = data[position].title
@@ -34,6 +34,6 @@ class PostRecyclerViewAdapter(private val listener: PostRecyclerViewAdapter.List
     }
 
     interface Listeners {
-        fun onItemClick(postId: Long)
+        fun onItemClick(postId: Long, postTitle: String)
     }
 }
