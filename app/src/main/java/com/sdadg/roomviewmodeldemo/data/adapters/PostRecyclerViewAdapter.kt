@@ -26,7 +26,7 @@ class PostRecyclerViewAdapter(private val listener: PostRecyclerViewAdapter.List
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.container.setOnClickListener({
-            listener.onItemClick(data[position].postId, data[position].title)
+            listener.onItemClick(data[position].postId?: -1, data[position].title)
         })
 
         holder.tvTitle.text = data[position].title

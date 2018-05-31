@@ -76,7 +76,7 @@ class PostsActivity : AppCompatActivity() {
     }
 
     private fun createPost(postId: Long) {
-        InsertDataTask(WeakReference(this)).execute(Post(postId, "Post $postId", Calendar.getInstance().timeInMillis))
+        InsertDataTask(WeakReference(this)).execute(Post(null, "Post $postId", Calendar.getInstance().timeInMillis))
     }
 
     private fun clearData() {

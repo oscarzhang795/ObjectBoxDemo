@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey
 data class Post (
 
         @PrimaryKey(autoGenerate = true)
-        val postId: Long,
+        val postId: Long?,
 
         @ColumnInfo (name = "title")
         val title: String,

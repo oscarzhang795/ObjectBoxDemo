@@ -9,7 +9,7 @@ import com.sdadg.roomviewmodeldemo.data.daos.PostDao
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
 import com.sdadg.roomviewmodeldemo.data.entities.Post
 
-@Database(entities = [(Post::class), (Comment::class)], version = 1)
+@Database (entities = [Post::class, Comment::class], version = 1)
 abstract class DemoRoomDatabaseAbstract: RoomDatabase() {
 
     abstract fun postDao(): PostDao
@@ -22,7 +22,7 @@ abstract class DemoRoomDatabaseAbstract: RoomDatabase() {
             if (mInstance == null) {
 
                 synchronized(DemoRoomDatabaseAbstract::class) {
-                    mInstance = Room.databaseBuilder(context.applicationContext, DemoRoomDatabaseAbstract::class.java, "RoomDemo.db").allowMainThreadQueries().build()
+                    mInstance = Room.databaseBuilder(context.applicationContext, DemoRoomDatabaseAbstract::class.java, "RoomDemo.db").build()
                 }
             }
 

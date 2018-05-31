@@ -7,7 +7,8 @@ import android.support.v7.widget.LinearLayoutManager
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.adapters.CommentRecyclerViewAdapter
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
-import com.sdadg.roomviewmodeldemo.data.old.CustomSqliteOpenHelper
+import com.sdadg.roomviewmodeldemo.data.repositories.IDataRepository
+import com.sdadg.roomviewmodeldemo.data.repositories.RoomRepository
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.content_feed.*
 import java.lang.ref.WeakReference
@@ -18,8 +19,8 @@ class PostDetailsActivity : AppCompatActivity() {
     var postId = 0L
     private var commentListener = CommentListener(WeakReference(this))
     val adapter = CommentRecyclerViewAdapter(commentListener)
-    //val db: IDataRepository = RoomRepository(this)
-    val db = CustomSqliteOpenHelper(this)
+    val db: IDataRepository = RoomRepository(this)
+    //val db = CustomSqliteOpenHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,7 @@ class PostDetailsActivity : AppCompatActivity() {
     }
 
     private fun loadComments() {
+        adapter.loadData(arrayListOf())
         rvComments.adapter = adapter
         rvComments.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         refreshComments()
@@ -57,12 +59,12 @@ class PostDetailsActivity : AppCompatActivity() {
         }
 
         override fun onItemClick(commentId: Long) {
-            if (weakReference.get() != null) {
+           /* if (weakReference.get() != null) {
                 val db = CustomSqliteOpenHelper(weakReference.get())
                 db.deleteComment(commentId)
 
                 (weakReference.get() as PostDetailsActivity).refreshComments()
-            }
+            }*/
         }
     }
 
@@ -95,7 +97,7 @@ class PostDetailsActivity : AppCompatActivity() {
 
     class DeleteDataTask(private var weakReference: WeakReference<PostDetailsActivity>) : AsyncTask<Comment, Void, Void>() {
         override fun doInBackground(vararg params: Comment): Void? {
-            //weakReference.get()?.db?.deleteComment(params[0])
+            weakReference.get()?.db?.deleteComment(params[0])
             return null
         }
 
