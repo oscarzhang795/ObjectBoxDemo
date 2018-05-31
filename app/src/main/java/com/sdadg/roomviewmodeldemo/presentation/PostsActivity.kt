@@ -12,7 +12,8 @@ import android.view.MenuItem
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.adapters.PostRecyclerViewAdapter
 import com.sdadg.roomviewmodeldemo.data.entities.Post
-import com.sdadg.roomviewmodeldemo.data.old.CustomSqliteOpenHelper
+import com.sdadg.roomviewmodeldemo.data.repositories.IDataRepository
+import com.sdadg.roomviewmodeldemo.data.repositories.RoomRepository
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.content_posts.*
 import java.lang.ref.WeakReference
@@ -21,8 +22,8 @@ import java.util.*
 class PostsActivity : AppCompatActivity() {
 
     private val postItemAdapterListener = AdapterListener(this)
-    //val db: IDataRepository = RoomRepository(this)
-    val db = CustomSqliteOpenHelper(this)
+    val db: IDataRepository = RoomRepository(this)
+    //val db = CustomSqliteOpenHelper(this)
     lateinit var posts: List<Post>
     val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
 
@@ -96,7 +97,7 @@ class PostsActivity : AppCompatActivity() {
     class LoadDataTask(private var weakReference: WeakReference<PostsActivity>) : AsyncTask<Void, Void, List<Post>>() {
 
         override fun doInBackground(vararg params: Void?): List<Post> {
-            return weakReference.get()?.db?.allPosts ?: arrayListOf()
+            return weakReference.get()?.db?.getAllPosts() ?: arrayListOf()
         }
 
         override fun onPostExecute(result: List<Post>) {
