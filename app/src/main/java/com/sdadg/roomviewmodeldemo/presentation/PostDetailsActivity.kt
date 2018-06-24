@@ -1,5 +1,8 @@
 package com.sdadg.roomviewmodeldemo.presentation
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -21,6 +24,7 @@ class PostDetailsActivity : AppCompatActivity() {
     val adapter = CommentRecyclerViewAdapter(commentListener)
     val db: IDataRepository = RoomRepository(this)
     //val db = CustomSqliteOpenHelper(this)   //TODO: Old Way
+    lateinit var comments: LiveData<List<Comment>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +38,12 @@ class PostDetailsActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             addComment()
         }
+
+        val totalCount: CounterView? = findViewById(R.id.totalCount)
+        totalCount?.setPostId(postId)
+
+        val totalEvenCount: CounterView? = findViewById(R.id.totalEvenCount)
+        totalEvenCount?.setPostId(postId)
 
         loadComments()
     }
@@ -68,16 +78,27 @@ class PostDetailsActivity : AppCompatActivity() {
         }
     }
 
-    class LoadDataTask(private var weakReference: WeakReference<PostDetailsActivity>) : AsyncTask<Long, Void, List<Comment>>() {
-        override fun doInBackground(vararg params: Long?): List<Comment> {
-            return weakReference.get()?.db?.getAllCommentsByPostId(params[0]?: 0)?: arrayListOf()
+    val observer: Observer<List<Comment>> = Observer { data ->
+        if (data != null) {
+            adapter.loadData(data)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    fun setObserver() {
+        comments.observe(this, observer)
+    }
+
+    class LoadDataTask(private var weakReference: WeakReference<PostDetailsActivity>) : AsyncTask<Long, Void, LiveData<List<Comment>>>() {
+        override fun doInBackground(vararg params: Long?): LiveData<List<Comment>> {
+            return weakReference.get()?.db?.getAllCommentsByPostId(params[0]?: 0)?: MutableLiveData<List<Comment>>()
         }
 
-        override fun onPostExecute(result: List<Comment>) {
+        override fun onPostExecute(result: LiveData<List<Comment>>) {
             super.onPostExecute(result)
 
-            weakReference.get()?.adapter?.loadData(result)
-            weakReference.get()?.adapter?.notifyDataSetChanged()
+            weakReference.get()?.comments = result
+            weakReference.get()?.setObserver()
         }
     }
 
@@ -91,7 +112,7 @@ class PostDetailsActivity : AppCompatActivity() {
         override fun onPostExecute(result: Void?) {
             super.onPostExecute(result)
 
-            weakReference.get()?.refreshComments()
+            //weakReference.get()?.refreshComments()
         }
     }
 
@@ -105,7 +126,7 @@ class PostDetailsActivity : AppCompatActivity() {
         override fun onPostExecute(result: Void?) {
             super.onPostExecute(result)
 
-            weakReference.get()?.refreshComments()
+            //weakReference.get()?.refreshComments()
         }
     }
 }

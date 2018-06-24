@@ -40,6 +40,8 @@ class PostsActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             createPost(((adapter.itemCount) + 1).toLong())
         }
+
+        loadData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -69,12 +71,6 @@ class PostsActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        loadData()
     }
 
     fun startLoadingService() {

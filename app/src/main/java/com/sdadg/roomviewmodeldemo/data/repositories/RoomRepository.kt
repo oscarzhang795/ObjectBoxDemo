@@ -2,6 +2,7 @@ package com.sdadg.roomviewmodeldemo.data.repositories
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Transformations
 import android.content.Context
 import com.sdadg.roomviewmodeldemo.data.database.DemoRoomDatabaseAbstract
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
@@ -11,18 +12,7 @@ import com.sdadg.roomviewmodeldemo.utilities.StringUtilities
 class RoomRepository(var context: Context): IDataRepository {
 
     override fun getAllPosts(): LiveData<List<Post>> {
-        var oldList = DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.getAllPosts()?: MutableLiveData<List<Post>>()
-
-        /*var newList = MutableLiveData<List<Post>>()
-
-        //https://android.jlelse.eu/exploring-livedata-architecture-component-f9375d3644ee
-        Transformations.map(oldList) {
-            data -> {newList = addColor(data)}
-        }
-
-        return newList*/
-
-        return oldList
+        return DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.getAllPosts()?: MutableLiveData<List<Post>>()
     }
 
     override fun getPostById(id: Long): LiveData<Post>? {
@@ -45,8 +35,24 @@ class RoomRepository(var context: Context): IDataRepository {
         DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.updatePost(post)
     }
 
-    override fun getAllCommentsByPostId(id: Long): List<Comment> {
-        return DemoRoomDatabaseAbstract.getInstance(context)?.commentDao()?.getCommentsByPostId(id)?: arrayListOf()
+    override fun getAllCommentsByPostId(id: Long): LiveData<List<Comment>> {
+        return DemoRoomDatabaseAbstract.getInstance(context)?.commentDao()?.getCommentsByPostId(id)?: MutableLiveData<List<Comment>>()
+    }
+
+    override fun getOnlyEventCommentsByPostId(id: Long): LiveData<List<Comment>> {
+        val allComments: LiveData<List<Comment>> = DemoRoomDatabaseAbstract.getInstance(context)?.commentDao()?.getCommentsByPostId(id)?: MutableLiveData<List<Comment>>()
+
+        return Transformations.map(allComments, { data -> filterOnlyEvenIds(data) })
+    }
+
+    fun filterOnlyEvenIds(allComments: List<Comment>): List<Comment> {
+        val filteredComments = allComments.filter (fun(comment : Comment) : Boolean {
+            /*Log.d("RoomRepository", "commentId = ${comment.commentId} is " + ((comment.commentId ?: 0 % 2) == 0L))*/
+
+            return ((((comment.commentId ?: 0) -1) % 2) == 0L)
+        })
+
+        return filteredComments
     }
 
     override fun insertComment(comment: Comment): Long {

@@ -13,7 +13,8 @@ interface IDataRepository {
     fun updatePost(post: Post)
     fun deletePosts()
 
-    fun getAllCommentsByPostId(id: Long): List<Comment>
+    fun getAllCommentsByPostId(id: Long): LiveData<List<Comment>>
+    fun getOnlyEventCommentsByPostId(id: Long): LiveData<List<Comment>>
     fun insertComment(comment: Comment): Long
     fun deleteComment(comment: Comment)
     fun updateComment(comment: Comment)
