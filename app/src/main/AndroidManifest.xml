@@ -23,6 +23,12 @@
                 android:name=".presentation.PostDetailsActivity"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <service
+                android:name=".services.PostService"
+                android:enabled="true"
+                android:exported="false">
+        </service>
     </application>
 
 </manifest>

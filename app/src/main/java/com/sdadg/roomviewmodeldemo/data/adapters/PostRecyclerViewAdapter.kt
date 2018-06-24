@@ -31,6 +31,8 @@ class PostRecyclerViewAdapter(private val listener: PostRecyclerViewAdapter.List
 
         holder.tvTitle.text = data[position].title
         holder.tvPostedAt.text = StringUtilities.formatTimestamp(data[position].postedAt)
+        holder.tvPostedAt.setTextColor(data[position].textColor)
+        holder.tvTitle.setTextColor(data[position].textColor)
     }
 
     interface Listeners {

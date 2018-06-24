@@ -1,12 +1,13 @@
 package com.sdadg.roomviewmodeldemo.data.repositories
 
+import android.arch.lifecycle.LiveData
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
 import com.sdadg.roomviewmodeldemo.data.entities.Post
 
 interface IDataRepository {
 
-    fun getAllPosts(): List<Post>
-    fun getPostById(id: Long): Post?
+    fun getAllPosts(): LiveData<List<Post>>
+    fun getPostById(id: Long): LiveData<Post>?
     fun insertPost(post: Post): Long
     fun deletePost(post: Post)
     fun updatePost(post: Post)

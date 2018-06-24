@@ -54,4 +54,5 @@ dependencies {
     // Test helpers for Room
     testImplementation "android.arch.persistence.room:testing:1.1.0"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }

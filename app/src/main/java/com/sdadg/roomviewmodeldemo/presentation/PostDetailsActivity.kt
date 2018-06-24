@@ -20,7 +20,7 @@ class PostDetailsActivity : AppCompatActivity() {
     private var commentListener = CommentListener(WeakReference(this))
     val adapter = CommentRecyclerViewAdapter(commentListener)
     val db: IDataRepository = RoomRepository(this)
-    //val db = CustomSqliteOpenHelper(this)
+    //val db = CustomSqliteOpenHelper(this)   //TODO: Old Way
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +98,7 @@ class PostDetailsActivity : AppCompatActivity() {
     class DeleteDataTask(private var weakReference: WeakReference<PostDetailsActivity>) : AsyncTask<Comment, Void, Void>() {
         override fun doInBackground(vararg params: Comment): Void? {
             weakReference.get()?.db?.deleteComment(params[0])
+            //weakReference.get()?.db?.deleteComment(params[0].commentId)  //TODO: Old way
             return null
         }
 

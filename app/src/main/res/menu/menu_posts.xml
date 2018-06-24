@@ -12,4 +12,16 @@
             android:title="@string/action_load_more_data"
             android:orderInCategory="101"
             app:showAsAction="never"/>
+
+    <item
+            android:id="@+id/action_start_auto_load"
+            android:title="@string/action_start_auto_load"
+            android:orderInCategory="102"
+            app:showAsAction="never"/>
+
+    <item
+            android:id="@+id/action_stop_auto_load"
+            android:title="@string/action_stop_auto_load"
+            android:orderInCategory="102"
+            app:showAsAction="never"/>
 </menu>

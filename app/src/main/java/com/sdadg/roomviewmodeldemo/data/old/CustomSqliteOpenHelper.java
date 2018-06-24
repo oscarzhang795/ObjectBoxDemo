@@ -78,13 +78,15 @@ public class CustomSqliteOpenHelper extends SQLiteOpenHelper {
 
             returnList.add(new Post(cursor.getLong(cursor.getColumnIndex(COLUMN_POST_ID)),
                                     cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
-                                    cursor.getLong(cursor.getColumnIndex(COLUMN_POSTED_AT))
+                                    cursor.getLong(cursor.getColumnIndex(COLUMN_POSTED_AT)),
+                                    android.R.color.white
                                     )
                             );
             while (cursor.moveToNext()) {
                 returnList.add(new Post(cursor.getLong(cursor.getColumnIndex(COLUMN_POST_ID)),
                                 cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)),
-                                cursor.getLong(cursor.getColumnIndex(COLUMN_POSTED_AT))
+                                cursor.getLong(cursor.getColumnIndex(COLUMN_POSTED_AT)),
+                                android.R.color.white
                         )
                 );
             }

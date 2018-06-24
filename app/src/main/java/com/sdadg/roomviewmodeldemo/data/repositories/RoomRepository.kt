@@ -1,17 +1,31 @@
 package com.sdadg.roomviewmodeldemo.data.repositories
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import com.sdadg.roomviewmodeldemo.data.database.DemoRoomDatabaseAbstract
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
 import com.sdadg.roomviewmodeldemo.data.entities.Post
+import com.sdadg.roomviewmodeldemo.utilities.StringUtilities
 
 class RoomRepository(var context: Context): IDataRepository {
 
-    override fun getAllPosts(): List<Post> {
-        return DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.getAllPosts()?: arrayListOf()
+    override fun getAllPosts(): LiveData<List<Post>> {
+        var oldList = DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.getAllPosts()?: MutableLiveData<List<Post>>()
+
+        /*var newList = MutableLiveData<List<Post>>()
+
+        //https://android.jlelse.eu/exploring-livedata-architecture-component-f9375d3644ee
+        Transformations.map(oldList) {
+            data -> {newList = addColor(data)}
+        }
+
+        return newList*/
+
+        return oldList
     }
 
-    override fun getPostById(id: Long): Post? {
+    override fun getPostById(id: Long): LiveData<Post>? {
         return DemoRoomDatabaseAbstract.getInstance(context)?.postDao()?.getPostByPostId(id)
     }
 
@@ -45,5 +59,14 @@ class RoomRepository(var context: Context): IDataRepository {
 
     override fun updateComment(comment: Comment) {
         DemoRoomDatabaseAbstract.getInstance(context)?.commentDao()?.updateComment(comment)
+    }
+
+    private fun addColor(posts: MutableLiveData<List<Post>>): MutableLiveData<List<Post>> {
+
+        for (post in posts.value!!) {
+            post.textColor = StringUtilities.getRandomColor()
+        }
+
+        return posts
     }
 }
