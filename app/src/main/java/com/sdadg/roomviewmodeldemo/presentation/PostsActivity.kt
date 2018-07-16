@@ -9,9 +9,11 @@ import android.support.v7.widget.LinearLayoutManager.VERTICAL
 import android.view.Menu
 import android.view.MenuItem
 import com.sdadg.roomviewmodeldemo.R
+import com.sdadg.roomviewmodeldemo.data.ObjectBoxApplication
 import com.sdadg.roomviewmodeldemo.data.adapters.PostRecyclerViewAdapter
-import com.sdadg.roomviewmodeldemo.data.old.CustomSqliteOpenHelper
 import com.sdadg.roomviewmodeldemo.presentation.roomviewmodeldemo.data.entities.Post
+import io.objectbox.Box
+import io.objectbox.kotlin.boxFor
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.content_posts.*
 import java.util.*
@@ -20,12 +22,16 @@ class PostsActivity : AppCompatActivity() {
 
     val postItemAdapterListener = AdapterListener(this)
     //val db: IDataRepository = RoomRepository(this)
-    val db = CustomSqliteOpenHelper(this)
+//    val db = CustomSqliteOpenHelper(this)
+    lateinit var postBox: Box<Post>
     lateinit var posts: List<Post>
     val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        postBox = (application as ObjectBoxApplication).boxStore.boxFor<Post>()
+
         setContentView(R.layout.activity_posts)
         setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
@@ -62,7 +68,7 @@ class PostsActivity : AppCompatActivity() {
     }
 
     fun loadData() {
-        posts = db.getAllPosts()
+        posts = postBox.all
 
         rvPosts.adapter = adapter
         rvPosts.layoutManager = LinearLayoutManager(this, VERTICAL, false)
@@ -76,11 +82,11 @@ class PostsActivity : AppCompatActivity() {
     }
 
     fun createPost(postId: Long) {
-        db.insertPost(Post(postId, "Post $postId", Calendar.getInstance().timeInMillis))
+        postBox.put(Post(0, "Post $postId", Calendar.getInstance().timeInMillis))
     }
 
     fun clearData() {
-        db.deletePosts()
+        postBox.removeAll()
         loadData()
     }
 

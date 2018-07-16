@@ -5,9 +5,9 @@ import io.objectbox.annotation.Id
 
 @Entity
 data class Post (
-        @Id val postId: Long,
+        @Id var postId: Long,
 
-        val title: String,
+        var title: String,
 
-        val postedAt: Long
+        var postedAt: Long
 )

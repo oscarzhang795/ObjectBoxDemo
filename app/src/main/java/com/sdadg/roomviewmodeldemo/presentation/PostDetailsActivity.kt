@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.sdadg.roomviewmodeldemo.R
+import com.sdadg.roomviewmodeldemo.data.ObjectBoxApplication
 import com.sdadg.roomviewmodeldemo.data.adapters.CommentRecyclerViewAdapter
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
+import com.sdadg.roomviewmodeldemo.data.entities.Comment_
 import com.sdadg.roomviewmodeldemo.data.old.CustomSqliteOpenHelper
+import io.objectbox.Box
+import io.objectbox.kotlin.boxFor
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.content_feed.*
 import java.lang.ref.WeakReference
@@ -18,10 +22,14 @@ class PostDetailsActivity : AppCompatActivity() {
     var commentListener = CommentListener(WeakReference(this))
     val adapter = CommentRecyclerViewAdapter(commentListener)
     //val db: IDataRepository = RoomRepository(this)
-    val db = CustomSqliteOpenHelper(this)
+
+    lateinit var commentBox: Box<Comment>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        commentBox = (application as ObjectBoxApplication).boxStore.boxFor<Comment>()
         setContentView(R.layout.activity_feed)
 
         postId = intent.getLongExtra("postId", 0)
@@ -37,12 +45,13 @@ class PostDetailsActivity : AppCompatActivity() {
     }
 
     private fun addComment() {
-        db.insertComment(Comment(null, postId, "Comment ${adapter.itemCount+1}", Calendar.getInstance().timeInMillis))
+        commentBox.put(Comment(0, postId, "Comment ${adapter.itemCount+1}", Calendar.getInstance().timeInMillis))
         refreshComments()
     }
 
     private fun loadComments() {
-        val commentList = db.getAllCommentsByPostId(postId)
+        val commentList = commentBox.query().equal(Comment_.postId, postId).build().find()
+//        val commentList = db.getAllCommentsByPostId(postId)
         rvComments.adapter = adapter
         rvComments.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         adapter.loadData(commentList)

@@ -5,11 +5,11 @@ import io.objectbox.annotation.Id
 
 @Entity
 data class Comment (
-        @Id val commentId: Long?,
+        @Id var commentId: Long,
 
-        val postId: Long,
+        var postId: Long,
 
-        val comment: String,
+        var comment: String,
 
-        val commentedAt: Long
+        var commentedAt: Long
 )
