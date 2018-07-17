@@ -6,7 +6,6 @@ import io.objectbox.annotation.Id
 
 @Entity
 data class Post (
-
         @Id
         var postId: Long?,
 
