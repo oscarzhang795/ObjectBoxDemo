@@ -7,13 +7,10 @@ import android.util.AttributeSet
 import android.widget.TextView
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
-import com.sdadg.roomviewmodeldemo.data.repositories.IDataRepository
-import com.sdadg.roomviewmodeldemo.data.repositories.RoomRepository
-
 open class CounterView: TextView {
 
     lateinit var activityContext: Context
-    lateinit var repository: IDataRepository
+//    lateinit var repository: IDataRepository
     lateinit var message: String
 
     constructor(context: Context?) : super(context)
@@ -38,15 +35,15 @@ open class CounterView: TextView {
     init {
         if (context != null) {
             activityContext = context
-            repository = RoomRepository(activityContext)
+//            repository = RoomRepository(activityContext)
         }
     }
 
     open fun setPostId(postId: Long) {
         if (activityContext is LifecycleOwner) {
-            val comments = repository.getAllCommentsByPostId(postId)
+//            val comments = repository.getAllCommentsByPostId(postId)
 
-            comments.observe(activityContext as LifecycleOwner, observer)
+//            comments.observe(activityContext as LifecycleOwner, observer)
         }
     }
 

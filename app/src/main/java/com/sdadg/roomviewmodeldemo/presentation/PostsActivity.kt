@@ -16,8 +16,6 @@ import android.view.MenuItem
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.adapters.PostRecyclerViewAdapter
 import com.sdadg.roomviewmodeldemo.data.entities.Post
-import com.sdadg.roomviewmodeldemo.data.repositories.IDataRepository
-import com.sdadg.roomviewmodeldemo.data.repositories.RoomRepository
 import com.sdadg.roomviewmodeldemo.services.PostService
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.content_posts.*
@@ -29,7 +27,7 @@ class PostsActivity : AppCompatActivity() {
     val TAG = PostsActivity::class.simpleName
 
     private val postItemAdapterListener = AdapterListener(this)
-    val db: IDataRepository = RoomRepository(this)
+//    val db: IDataRepository = RoomRepository(this)
     var posts: LiveData<List<Post>> = MutableLiveData<List<Post>>()
     val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
 
@@ -113,7 +111,8 @@ class PostsActivity : AppCompatActivity() {
     class LoadDataTask(private var weakReference: WeakReference<PostsActivity>) : AsyncTask<Void, Void, LiveData<List<Post>>>() {
 
         override fun doInBackground(vararg params: Void?): LiveData<List<Post>> {
-            return weakReference.get()?.db?.getAllPosts()?: MutableLiveData<List<Post>>()
+//            return weakReference.get()?.db?.getAllPosts()?: MutableLiveData<List<Post>>()
+            TODO("not implemented")
         }
 
         override fun onPostExecute(result: LiveData<List<Post>>) {
@@ -133,7 +132,7 @@ class PostsActivity : AppCompatActivity() {
     class InsertDataTask(private var weakReference: WeakReference<PostsActivity>) : AsyncTask<Post, Void, Void>() {
 
         override fun doInBackground(vararg params: Post): Void? {
-            weakReference.get()?.db?.insertPost(params[0])
+//            weakReference.get()?.db?.insertPost(params[0])
             return null
         }
 
@@ -146,7 +145,7 @@ class PostsActivity : AppCompatActivity() {
 
     class DeleteDataTask(private var weakReference: WeakReference<PostsActivity>) : AsyncTask<Void, Void, Void>() {
         override fun doInBackground(vararg params: Void?): Void? {
-            weakReference.get()?.db?.deletePosts()
+//            weakReference.get()?.db?.deletePosts()
             return null
         }
 

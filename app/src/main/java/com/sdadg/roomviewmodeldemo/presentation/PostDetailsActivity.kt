@@ -10,8 +10,6 @@ import android.support.v7.widget.LinearLayoutManager
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.adapters.CommentRecyclerViewAdapter
 import com.sdadg.roomviewmodeldemo.data.entities.Comment
-import com.sdadg.roomviewmodeldemo.data.repositories.IDataRepository
-import com.sdadg.roomviewmodeldemo.data.repositories.RoomRepository
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.content_feed.*
 import java.lang.ref.WeakReference
@@ -22,7 +20,7 @@ class PostDetailsActivity : AppCompatActivity() {
     var postId = 0L
     private var commentListener = CommentListener(WeakReference(this))
     val adapter = CommentRecyclerViewAdapter(commentListener)
-    val db: IDataRepository = RoomRepository(this)
+//    val db: IDataRepository = RoomRepository(this)
     //val db = CustomSqliteOpenHelper(this)   //TODO: Old Way
     lateinit var comments: LiveData<List<Comment>>
 
@@ -91,7 +89,9 @@ class PostDetailsActivity : AppCompatActivity() {
 
     class LoadDataTask(private var weakReference: WeakReference<PostDetailsActivity>) : AsyncTask<Long, Void, LiveData<List<Comment>>>() {
         override fun doInBackground(vararg params: Long?): LiveData<List<Comment>> {
-            return weakReference.get()?.db?.getAllCommentsByPostId(params[0]?: 0)?: MutableLiveData<List<Comment>>()
+//            return weakReference.get()?.db?.getAllCommentsByPostId(params[0]?: 0)?: MutableLiveData<List<Comment>>()
+//            return MutableList<List<Comment>>()
+            TODO("not implemented")
         }
 
         override fun onPostExecute(result: LiveData<List<Comment>>) {
@@ -105,7 +105,7 @@ class PostDetailsActivity : AppCompatActivity() {
     class InsertDataTask(private var weakReference: WeakReference<PostDetailsActivity>) : AsyncTask<Comment, Void, Void>() {
 
         override fun doInBackground(vararg params: Comment): Void? {
-            weakReference.get()?.db?.insertComment(params[0])
+//            weakReference.get()?.db?.insertComment(params[0])
             return null
         }
 
@@ -118,7 +118,7 @@ class PostDetailsActivity : AppCompatActivity() {
 
     class DeleteDataTask(private var weakReference: WeakReference<PostDetailsActivity>) : AsyncTask<Comment, Void, Void>() {
         override fun doInBackground(vararg params: Comment): Void? {
-            weakReference.get()?.db?.deleteComment(params[0])
+//            weakReference.get()?.db?.deleteComment(params[0])
             //weakReference.get()?.db?.deleteComment(params[0].commentId)  //TODO: Old way
             return null
         }

@@ -12,9 +12,9 @@ class CounterEvenView: CounterView {
 
     override fun setPostId(postId: Long) {
         if (activityContext is LifecycleOwner) {
-            val comments = repository.getOnlyEventCommentsByPostId(postId)
+//            val comments = repository.getOnlyEventCommentsByPostId(postId)
 
-            comments.observe(activityContext as LifecycleOwner, observer)
+//            comments.observe(activityContext as LifecycleOwner, observer)
         }
     }
 }
