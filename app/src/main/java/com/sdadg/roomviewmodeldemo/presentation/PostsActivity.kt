@@ -1,5 +1,6 @@
 package com.sdadg.roomviewmodeldemo.presentation
 
+import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
@@ -13,10 +14,14 @@ import android.support.v7.widget.LinearLayoutManager.VERTICAL
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.sdadg.roomviewmodeldemo.ObjectBox
 import com.sdadg.roomviewmodeldemo.R
 import com.sdadg.roomviewmodeldemo.data.adapters.PostRecyclerViewAdapter
 import com.sdadg.roomviewmodeldemo.data.entities.Post
 import com.sdadg.roomviewmodeldemo.services.PostService
+import io.objectbox.Box
+import io.objectbox.BoxStore
+import io.objectbox.kotlin.boxFor
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.content_posts.*
 import java.lang.ref.WeakReference
@@ -27,12 +32,16 @@ class PostsActivity : AppCompatActivity() {
     val TAG = PostsActivity::class.simpleName
 
     private val postItemAdapterListener = AdapterListener(this)
-//    val db: IDataRepository = RoomRepository(this)
     var posts: LiveData<List<Post>> = MutableLiveData<List<Post>>()
     val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
 
+    lateinit var mPostBox: Box<Post>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mPostBox = (application as ObjectBox).boxStore.boxFor<Post>()
+
         setContentView(R.layout.activity_posts)
         setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
@@ -82,7 +91,7 @@ class PostsActivity : AppCompatActivity() {
     fun loadData() {
         rvPosts.adapter = adapter
         rvPosts.layoutManager = LinearLayoutManager(this, VERTICAL, false)
-        LoadDataTask(WeakReference(this)).execute()
+//        LoadDataTask(WeakReference(this)).execute()
     }
 
     private fun insertTestData() {
@@ -92,11 +101,11 @@ class PostsActivity : AppCompatActivity() {
     }
 
     private fun createPost(postId: Long) {
-        InsertDataTask(WeakReference(this)).execute(Post(null, "Manually created Post #: $postId", Calendar.getInstance().timeInMillis))
+        mPostBox.put(Post(null, "Manually created Post #: $postId", Calendar.getInstance().timeInMillis))
     }
 
     private fun clearData() {
-        DeleteDataTask(WeakReference(this)).execute()
+        mPostBox.removeAll()
     }
 
     class AdapterListener (val context: Context) : PostRecyclerViewAdapter.Listeners {
@@ -108,22 +117,22 @@ class PostsActivity : AppCompatActivity() {
         }
     }
 
-    class LoadDataTask(private var weakReference: WeakReference<PostsActivity>) : AsyncTask<Void, Void, LiveData<List<Post>>>() {
-
-        override fun doInBackground(vararg params: Void?): LiveData<List<Post>> {
-//            return weakReference.get()?.db?.getAllPosts()?: MutableLiveData<List<Post>>()
-            TODO("not implemented")
-        }
-
-        override fun onPostExecute(result: LiveData<List<Post>>) {
-            super.onPostExecute(result)
-
-            weakReference.get()?.posts = result
-            weakReference.get()?.setObserver()
-            /*weakReference.get()?.adapter?.loadData(result)
-            weakReference.get()?.adapter?.notifyDataSetChanged()*/
-        }
-    }
+//    class LoadDataTask(private var weakReference: WeakReference<PostsActivity>) : AsyncTask<Void, Void, LiveData<List<Post>>>() {
+//
+//        override fun doInBackground(vararg params: Void?): LiveData<List<Post>> {
+////            return weakReference.get()?.db?.getAllPosts()?: MutableLiveData<List<Post>>()
+//            TODO("not implemented")
+//        }
+//
+//        override fun onPostExecute(result: LiveData<List<Post>>) {
+//            super.onPostExecute(result)
+//
+//            weakReference.get()?.posts = result
+//            weakReference.get()?.setObserver()
+//            /*weakReference.get()?.adapter?.loadData(result)
+//            weakReference.get()?.adapter?.notifyDataSetChanged()*/
+//        }
+//    }
 
     private fun setObserver() {
         posts.observe(this, observer)
