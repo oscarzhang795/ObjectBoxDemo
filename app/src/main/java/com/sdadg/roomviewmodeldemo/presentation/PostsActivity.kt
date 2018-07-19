@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearLayoutManager.VERTICAL
 import android.util.Log
@@ -18,8 +19,10 @@ import com.sdadg.roomviewmodeldemo.data.adapters.PostRecyclerViewAdapter
 import com.sdadg.roomviewmodeldemo.data.entities.Post
 import com.sdadg.roomviewmodeldemo.services.PostService
 import io.objectbox.Box
+import io.objectbox.android.AndroidScheduler
 import io.objectbox.android.ObjectBoxLiveData
 import io.objectbox.kotlin.boxFor
+import io.objectbox.reactive.DataSubscriptionList
 import kotlinx.android.synthetic.main.activity_posts.*
 import kotlinx.android.synthetic.main.content_posts.*
 import java.util.*
@@ -29,8 +32,9 @@ class PostsActivity : AppCompatActivity() {
     val TAG = PostsActivity::class.simpleName
 
     private val postItemAdapterListener = AdapterListener(this)
-    var posts: LiveData<List<Post>> = MutableLiveData<List<Post>>()
-    val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
+    private var posts: LiveData<List<Post>> = MutableLiveData<List<Post>>()
+    private val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
+    private val dataSub = DataSubscriptionList()
 
     private lateinit var mPostBox: Box<Post>
 
@@ -39,14 +43,25 @@ class PostsActivity : AppCompatActivity() {
 
         mPostBox = (application as ObjectBox).boxStore.boxFor()
         var query = mPostBox.query().build()
+        var list = query.find()
 
-        ObjectBoxLiveData<Post>(query).observe(this, Observer<List<Post>> { data ->
-            if(data != null) {
-                Log.d(TAG, "Data changed.")
-                adapter.loadData(data)
-                adapter.notifyDataSetChanged()
-            }
-        })
+
+        query.subscribe(dataSub).onlyChanges().on(AndroidScheduler.mainThread()).observer { data ->
+            val diffResult = DiffUtil.calculateDiff(object: DiffUtil.Callback() {
+                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+                        list[oldItemPosition].postId == data[newItemPosition].postId
+
+                override fun getOldListSize() = list.size
+
+                override fun getNewListSize() = data.size
+
+                override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+                        list[oldItemPosition].title == data[newItemPosition].title
+            })
+
+            adapter.loadData(data)
+            diffResult.dispatchUpdatesTo(adapter)
+        }
 
 
         setContentView(R.layout.activity_posts)
@@ -95,7 +110,7 @@ class PostsActivity : AppCompatActivity() {
         stopService(Intent(this, PostService::class.java))
     }
 
-    fun loadData() {
+    private fun loadData() {
         rvPosts.adapter = adapter
         rvPosts.layoutManager = LinearLayoutManager(this, VERTICAL, false)
     }
