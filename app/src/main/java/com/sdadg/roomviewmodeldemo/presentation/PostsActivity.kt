@@ -2,7 +2,6 @@ package com.sdadg.roomviewmodeldemo.presentation
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearLayoutManager.VERTICAL
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.sdadg.roomviewmodeldemo.ObjectBox
@@ -20,7 +18,6 @@ import com.sdadg.roomviewmodeldemo.data.entities.Post
 import com.sdadg.roomviewmodeldemo.services.PostService
 import io.objectbox.Box
 import io.objectbox.android.AndroidScheduler
-import io.objectbox.android.ObjectBoxLiveData
 import io.objectbox.kotlin.boxFor
 import io.objectbox.reactive.DataSubscriptionList
 import kotlinx.android.synthetic.main.activity_posts.*
@@ -69,6 +66,7 @@ class PostsActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             createPost(((adapter.itemCount) + 1).toLong())
         }
+        adapter.loadData(list)
         loadData()
 
     }
