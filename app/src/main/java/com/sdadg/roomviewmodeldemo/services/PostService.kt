@@ -3,20 +3,24 @@ package com.sdadg.roomviewmodeldemo.services
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.sdadg.roomviewmodeldemo.ObjectBox
+import com.sdadg.roomviewmodeldemo.data.entities.Post
 import com.sdadg.roomviewmodeldemo.utilities.StringUtilities
+import io.objectbox.Box
+import io.objectbox.kotlin.boxFor
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 
 class PostService : Service() {
-//    lateinit var repository: IDataRepository
+    lateinit var mPostBox: Box<Post>
     lateinit var scheduledThreadPoolExecutor: ScheduledExecutorService
     val postName = "Automatically created Post #:"
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
             super.onStartCommand(intent, flags, startId)
 
-//        repository = RoomRepository(this)
+        mPostBox = (application as ObjectBox).boxStore.boxFor()
 
         startAutomaticPostCreation()
         return Service.START_NOT_STICKY
@@ -26,7 +30,7 @@ class PostService : Service() {
         scheduledThreadPoolExecutor = Executors.newScheduledThreadPool(2)
 
         val addPostRunnable = Runnable {
-//         repository.insertPost(StringUtilities.createRandomPost(postName))
+            mPostBox.put(StringUtilities.createRandomPost(postName))
         }
 
         scheduledThreadPoolExecutor.scheduleAtFixedRate(addPostRunnable, 5, 5, TimeUnit.SECONDS)

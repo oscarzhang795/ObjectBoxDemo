@@ -29,7 +29,6 @@ class PostsActivity : AppCompatActivity() {
     val TAG = PostsActivity::class.simpleName
 
     private val postItemAdapterListener = AdapterListener(this)
-    var posts: LiveData<List<Post>> = MutableLiveData<List<Post>>()
     val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
 
     private lateinit var mPostBox: Box<Post>
