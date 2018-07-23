@@ -1,12 +1,9 @@
 package com.sdadg.roomviewmodeldemo.presentation
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearLayoutManager.VERTICAL
 import android.view.Menu
@@ -29,7 +26,6 @@ class PostsActivity : AppCompatActivity() {
     val TAG = PostsActivity::class.simpleName
 
     private val postItemAdapterListener = AdapterListener(this)
-    private var posts: LiveData<List<Post>> = MutableLiveData<List<Post>>()
     private val adapter = PostRecyclerViewAdapter(postItemAdapterListener)
     private val dataSub = DataSubscriptionList()
 
@@ -40,10 +36,8 @@ class PostsActivity : AppCompatActivity() {
 
         mPostBox = (application as ObjectBox).boxStore.boxFor()
         var query = mPostBox.query().build()
-        var list = query.find()
 
-
-        query.subscribe(dataSub).onlyChanges().on(AndroidScheduler.mainThread()).observer { data ->
+        query.subscribe(dataSub).on(AndroidScheduler.mainThread()).observer { data ->
             adapter.loadData(data)
             adapter.notifyDataSetChanged()
         }
@@ -54,7 +48,6 @@ class PostsActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             createPost(((adapter.itemCount) + 1).toLong())
         }
-        adapter.loadData(list)
         loadData()
 
     }
