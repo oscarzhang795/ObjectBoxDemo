@@ -44,20 +44,8 @@ class PostsActivity : AppCompatActivity() {
 
 
         query.subscribe(dataSub).onlyChanges().on(AndroidScheduler.mainThread()).observer { data ->
-            val diffResult = DiffUtil.calculateDiff(object: DiffUtil.Callback() {
-                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-                        list[oldItemPosition].postId == data[newItemPosition].postId
-
-                override fun getOldListSize() = list.size
-
-                override fun getNewListSize() = data.size
-
-                override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-                        list[oldItemPosition].title == data[newItemPosition].title
-            })
-
             adapter.loadData(data)
-            diffResult.dispatchUpdatesTo(adapter)
+            adapter.notifyDataSetChanged()
         }
 
 
